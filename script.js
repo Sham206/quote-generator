@@ -1,23 +1,19 @@
-const quotes = [
-  "Discipline beats motivation.",
-  "Small steps every day.",
-  "Stop planning, start building.",
-  "Pain today, pride tomorrow.",
-  "Consistency wins."
-];
-const btn=document.getElementById('btn');
-const res=document.getElementById('res');
-btn.addEventListener('click',() =>{
-  res.textContent='Loading....';
+async function getdata() {
   btn.disabled=true;
-  setTimeout(() => {
-    if (quotes.length===0){
-      res.textContent="quotes are not available";
+  res.textContent="fatching...";
+  await new Promise(resolve=>setTimeout(resolve,1000));
+  try{
+    const response =await fetch("https://dummyjson.com/quotes/random");
+    if(!response.ok){
+      throw new Error(res.textContent="api error");
     }
-    else{
-      const random_num=Math.floor((Math.random()*quotes.length));
-      res.textContent=quotes[random_num];
-    }
-    btn.disabled=false;
-  },1000);
-})
+    const data = await response.json();
+    res.textContent=`${data.quote}-${data.author}`;
+  }catch(error){
+    res.textContent=("Error in finding quote");
+  }
+  btn.disabled=false;
+}
+const btn = document.getElementById('btn');
+const res =document.getElementById('res');
+btn.addEventListener('click',getdata);
