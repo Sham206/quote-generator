@@ -18,6 +18,12 @@ function CheckInternet(){
   }
   return true;
 }
+async function showToast(message){
+  toast.textContent=message;
+  toast.classList.add("show");
+  await wait(1000);
+  toast.classList.remove("show");
+}
 async function getdata() {
   if (!CheckInternet()) {
     return;
@@ -46,18 +52,11 @@ async function copyText() {
     cpy_btn.disabled = true;
     await navigator.clipboard.writeText(text);
     showToast("copied");
-    cpy_btn.disabled=false;
     await wait(1000);
-    cpy_btn.textContent = "copy";
+    cpy_btn.disabled=false;
   }catch(error){
     showToast("Error to copy");
   }
-}
-async function showToast(message){
-  toast.textContent=message;
-  toast.classList.add("show");
-  await wait(1500);
-  toast.classList.remove("show");
 }
 const btn = document.getElementById('btn');
 const res =document.getElementById('res');
